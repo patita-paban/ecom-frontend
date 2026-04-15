@@ -303,7 +303,7 @@ export const createStripePaymentSecret
 export const stripePaymentConfirmation 
     = (sendData, setErrorMesssage, setLoadng, toast) => async (dispatch, getState) => {
         try {
-            const response  = await api.post("/order/users/payments/online", sendData);
+            const response  = await api.post("/order/users/payments/Stripe", sendData);
             if (response.data) {
                 localStorage.removeItem("CHECKOUT_ADDRESS");
                 localStorage.removeItem("cartItems");
