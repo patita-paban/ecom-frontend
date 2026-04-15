@@ -11,6 +11,7 @@ const Contact = () => {
         subject: "",
         message: ""
     });
+    const BASE_URL = import.meta.env.VITE_BACK_END_URL;
 
     const [success, setSuccess] = useState("");
 
@@ -25,7 +26,7 @@ const Contact = () => {
         e.preventDefault();
 
          try {
-        await axios.post("http://localhost:8089/api/contact", form);
+        await axios.post(`${BASE_URL}/api/contact`, form);
 
         // ✅ POPUP SUCCESS
         Swal.fire({
