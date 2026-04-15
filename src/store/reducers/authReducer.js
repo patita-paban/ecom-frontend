@@ -1,5 +1,6 @@
 const initialState = {
-    user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null,
+    // CHANGED: was localStorage.getItem("user") — key mismatch with login action which saves to "auth"
+    user: localStorage.getItem("auth") ? JSON.parse(localStorage.getItem("auth")) : null,
     loading: false,
     error: null,
     address: [],
@@ -10,6 +11,8 @@ const initialState = {
 export const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case "LOGIN_USER":
+            // ADDED: persist to localStorage so page refresh restores the user
+            localStorage.setItem("auth", JSON.stringify(action.payload));
             return { ...state, user: action.payload };
         case "USER_ADDRESS":
             return { ...state, address: action.payload };
@@ -31,7 +34,7 @@ export const authReducer = (state = initialState, action) => {
         ...state.user,
         ...action.payload
       };
-      localStorage.setItem("user", JSON.stringify(updatedUser));
+      localStorage.setItem("auth", JSON.stringify(updatedUser)); // CHANGED: was "user"
       return {
         ...state,
         user: updatedUser,
@@ -52,7 +55,7 @@ export const authReducer = (state = initialState, action) => {
         ...state.user,
         ...action.payload
       };
-      localStorage.setItem("user", JSON.stringify(profileUser));
+      localStorage.setItem("auth", JSON.stringify(profileUser)); // CHANGED: was "user"
       return {
         ...state,
         loading: false,
