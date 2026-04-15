@@ -299,35 +299,24 @@ export const createStripePaymentSecret
 };
 
 
-export const stripePaymentConfirmation =
-  (sendData, setErrorMessage, setLoading, toast) =>
-  async (dispatch, getState) => {
-    try {
-      setLoading(true);
-      const response = await api.post(
-        "/order/users/payments/Stripe",   // ← paymentMethod = "Stripe"
-        sendData
-      );
-      if (response.data) {
-        localStorage.removeItem("CHECKOUT_ADDRESS");
-        localStorage.removeItem("cartItems");
-        localStorage.removeItem("client-secret");
-        dispatch({ type: "REMOVE_CLIENT_SECRET_ADDRESS" });
-        dispatch({ type: "CLEAR_CART" });
-        toast.success("Order placed successfully!");
-      } else {
-        setErrorMessage("Payment Failed. Please try again.");
-      }
-    } catch (error) {
-      console.error(error);
-      setErrorMessage(
-        error?.response?.data?.message || "Payment Failed. Please try again."
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export const stripePaymentConfirmation 
+    = (sendData, setErrorMesssage, setLoadng, toast) => async (dispatch, getState) => {
+        try {
+            const response  = await api.post("/order/users/payments/online", sendData);
+            if (response.data) {
+                localStorage.removeItem("CHECKOUT_ADDRESS");
+                localStorage.removeItem("cartItems");
+                localStorage.removeItem("client-secret");
+                dispatch({ type: "REMOVE_CLIENT_SECRET_ADDRESS"});
+                dispatch({ type: "CLEAR_CART"});
+                toast.success("Order Accepted");
+              } else {
+                setErrorMesssage("Payment Failed. Please try again.");
+              }
+        } catch (error) {
+            setErrorMesssage("Payment Failed. Please try again.");
+        }
+};
 export const analyticsAction = () => async (dispatch, getState) => {
         try {
             dispatch({ type: "IS_FETCHING"});
